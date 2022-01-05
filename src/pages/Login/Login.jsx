@@ -1,11 +1,23 @@
-import React from 'react'
+import React from "react";
+import { useAuth } from "reactfire";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const Login = () => {
-    return (
-        <div>
-            login page
-        </div>
-    )
-}
+  const auth = useAuth();
+  const provider = new GoogleAuthProvider();
 
-export default Login
+  const handleLoginWithGoogle = async () => {
+    await signInWithPopup(auth, provider).then((result) =>
+      console.log(result.user)
+    );
+  };
+
+  return (
+    <div>
+      <h2>Login </h2>
+      <button onClick={handleLoginWithGoogle}>SIGN IN WITH GOOGLE</button>
+    </div>
+  );
+};
+
+export default Login;

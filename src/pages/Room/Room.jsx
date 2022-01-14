@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./Room.css";
-import { makeStyles } from '@mui/styles';
 import { useParams } from "react-router-dom";
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
@@ -8,6 +7,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
+import { useNavigate } from "react-router-dom";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Room = (props) => {
@@ -18,7 +18,11 @@ const Room = (props) => {
     { id: 4, displayName: 'Jessi', role: 'Player' },
     { id: 5, displayName: 'Jay', role: 'Player' },
   ]);
+  const navigate = useNavigate();
   const { id } = useParams();
+  const handleGame = () => {
+    navigate("/game/" + id);
+  };
   return (
     <div class="room-format">
       <h2>ROOM {id}</h2>
@@ -37,7 +41,7 @@ const Room = (props) => {
           </div>
         )}
       </List>
-      <button className="play">
+      <button className="play" onClick={handleGame}>
         <b>START GAME</b>
       </button>
     </div>

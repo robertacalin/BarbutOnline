@@ -12,6 +12,7 @@ import {
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import Room from "./pages/Room/Room";
+import Game from "./pages/Game/Game";
 import { useSelector } from "react-redux";
 function App() {
   const app = useFirebaseApp(); // a parent component contains a `FirebaseAppProvider`
@@ -35,6 +36,7 @@ function App() {
             element={!user.uid ? <Login /> : <Navigate to="/" />}
           />
           <Route path="/room/:id" element={<Room />} />
+          <Route path="/game/:id" element={<Game />} />
         </Routes>
       </DatabaseProvider>
     </AuthProvider>

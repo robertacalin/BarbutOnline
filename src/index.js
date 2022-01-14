@@ -5,6 +5,8 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { FirebaseAppProvider } from "reactfire";
+import { Provider } from "react-redux";
+import { store } from "./store/store";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBXXyggd637paLg3fMsdgb1llHkYMULSiY",
@@ -21,7 +23,9 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-        <App />
+        <Provider store={store}>
+          <App />
+        </Provider>
       </FirebaseAppProvider>
     </BrowserRouter>
   </React.StrictMode>,

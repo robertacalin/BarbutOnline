@@ -14,8 +14,7 @@ import { useNavigate } from "react-router-dom";
 const Home = () => {
   const [open, setOpen] = React.useState(false);
   const [openCreate, setOpenCreate] = React.useState(false);
-  const [fullWidth, setFullWidth] = React.useState(true);
-  const [maxWidth, setMaxWidth] = React.useState("sm");
+  const [roomId, setRoomId] = React.useState(null);
   const navigate = useNavigate();
 
   const handleClickOpen = () => {
@@ -27,13 +26,12 @@ const Home = () => {
   };
   const handleJoin = () => {
     console.log("Merge");
-    navigate("/login");
+    navigate("/room/" + roomId);
     // Redirect to room
   };
   const handleClose = () => {
     setOpen(false);
   };
-
 
   const handleClickOpenCreate = () => {
     setOpenCreate(true);
@@ -46,18 +44,15 @@ const Home = () => {
     <div>
       <div id="text_div center_all">
         <div className="center_all">
-          <Button class="homeButton" onClick={handleClickOpenCreate}>
-          <b>Create room</b>
-          </Button>
-          <Button class="homeButton" onClick={handleClickOpen}>
-            <b>Join room</b>
-          </Button>
-          <Dialog
-            fullWidth={fullWidth}
-            maxWidth={maxWidth}
-            open={open}
-            onClose={handleClose}
-          >
+          <div className="d-grid gap-3">
+            <button className="homeButton" onClick={handleClickOpenCreate}>
+              <b>Create room</b>
+            </button>
+            <button className="homeButton" onClick={handleClickOpen}>
+              <b>Join room</b>
+            </button>
+          </div>
+          <Dialog maxWidth="md" open={open} onClose={handleClose}>
             <DialogTitle>Enter room code:</DialogTitle>
             <DialogContent>
               <Box
@@ -75,23 +70,19 @@ const Home = () => {
                     id="room-code"
                     label="Room Code"
                     variant="outlined"
+                    onChange={(event) => {
+                      setRoomId(event.target.value);
+                    }}
                   />
                 </FormControl>
               </Box>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleJoin}>Join</Button>
+              <Button onClick={handleJoin} disabled={!roomId}>Join</Button>
               <Button onClick={handleClose}>Close</Button>
             </DialogActions>
           </Dialog>
-
-
-          <Dialog
-            fullWidth={fullWidth}
-            maxWidth={maxWidth}
-            open={openCreate}
-            onClose={handleCloseCreate}
-          >
+          <Dialog maxWidth="md" open={openCreate} onClose={handleCloseCreate}>
             <DialogTitle>Enter room details:</DialogTitle>
             <DialogContent>
               <Box
@@ -122,7 +113,6 @@ const Home = () => {
         </div>
       </div>
     </div>
-
   );
 };
 

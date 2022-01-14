@@ -1,5 +1,4 @@
-/* import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+/* 
 
 import { MAIN_URL } from "../utils/url";
 
@@ -44,10 +43,18 @@ export const userSlice = createSlice({
 export const { updateUserType, deleteUser } = userSlice.actions;
 export default userSlice.reducer; */
 
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+
 export const userSlice = createSlice({
     name: "user",
-    initialState: { },
+    initialState: {uid:null , displayName:null},
     reducers: {
+      setUser(state, action){
+        state.uid = action.payload.uid ;
+        state.displayName = action.payload.displayName;
+        console.log(action.payload);
+      }
      
     },
     extraReducers: {
@@ -56,3 +63,4 @@ export const userSlice = createSlice({
   });
   
   export default userSlice.reducer;
+  export const {setUser}=userSlice.actions;

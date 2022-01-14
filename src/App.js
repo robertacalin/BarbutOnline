@@ -1,7 +1,8 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Routes, Route } from "react-router-dom";
+import { Navigate } from "react-router";
 import { getAuth } from "firebase/auth"; // Firebase v9+
-import { getDatabase } from "firebase/database"; // Firebase v9+
+import { getDatabase } from "firebase/database"; // Firebase v9+\
 import {
   FirebaseAppProvider,
   DatabaseProvider,
@@ -11,21 +12,29 @@ import {
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import Room from "./pages/Room/Room";
+import { useSelector } from "react-redux";
 function App() {
   const app = useFirebaseApp(); // a parent component contains a `FirebaseAppProvider`
 
   // initialize Database and Auth with the normal Firebase SDK functions
   const database = getDatabase(app);
   const auth = getAuth(app);
-  const rooms = [];
+  const user = useSelector((state) => state.user);
+
   return (
     <AuthProvider sdk={auth}>
       <DatabaseProvider sdk={database}>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/room/:{id}" element={<Room />} />
-          {/* NU MERGE ID UL ASTA*/}
+          <Route
+            path="/"
+            exact
+            element={user.uid ? <Home /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/login"
+            element={!user.uid ? <Login /> : <Navigate to="/" />}
+          />
+          <Route path="/room/:id" element={<Room />} />
         </Routes>
       </DatabaseProvider>
     </AuthProvider>

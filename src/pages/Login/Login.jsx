@@ -1,6 +1,7 @@
 import React from "react";
 import { useAuth } from "reactfire";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import "./Login.css";
 
 const Login = () => {
   const auth = useAuth();
@@ -13,10 +14,10 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h2>Login </h2>
-      <button onClick={handleLoginWithGoogle}>SIGN IN WITH GOOGLE</button>
-    </div>
+      <div className="text_div center_all">
+        <h1>Login</h1>
+        <button className="sign" onClick={handleLoginWithGoogle}><b>Sign in with Google</b></button>
+      </div>
   );
 };
 

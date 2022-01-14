@@ -18,8 +18,12 @@ const Home = () => {
 
   const handleClickOpen = () => {
     setOpen(true);
+    
   };
-
+  const handleCreate = () => {
+    navigate("/login");
+    // Redirect to room
+  };
   const handleJoin = () => {
     console.log("Merge");
     navigate("/login");
@@ -33,22 +37,11 @@ const Home = () => {
     <div>
       <div id="text_div center_all">
         <div className="center_all">
-          <Button
-            style={{
-              backgroundColor: "#1A76D2",
-              color: "#FFFFFF",
-            }}
-          >
-            Create room
+          <Button class="homeButton">
+          <b>Create room</b>
           </Button>
-          <Button
-            style={{
-              backgroundColor: "#1A76D2",
-              color: "#FFFFFF",
-            }}
-            onClick={handleClickOpen}
-          >
-            Join room
+          <Button class="homeButton" onClick={handleClickOpen}>
+            <b>Join room</b>
           </Button>
           <Dialog
             fullWidth={fullWidth}

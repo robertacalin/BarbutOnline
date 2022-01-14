@@ -28,3 +28,24 @@
     margin-right: 0;
     font-weight: bold;
   }
+  .room-format{
+    width: 800px;
+    height: fit-content;
+    top: 50%;
+    left: 50%;
+    margin: -25px 0 0 -25px; 
+    transform: translate(-50%, -50%);
+    position: absolute;
+    background-color: #1A76D2;
+    color: #FFFFFF;
+    border: 2px solid #1A76D2;
+    border-radius: 25px;
+    padding: 20px;
+  }
+  .play{
+    background-color: #e8edf1;
+    color: #1A76D2;
+    border: 2px solid #ffffff;
+    border-radius: 25px;
+    padding: 20px;
+  }

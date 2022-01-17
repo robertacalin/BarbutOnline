@@ -21,6 +21,7 @@ function App() {
   const database = getDatabase(app);
   const auth = getAuth(app);
   const user = useSelector((state) => state.user);
+  console.log(Boolean(auth.currentUser));
 
   return (
     <AuthProvider sdk={auth}>
@@ -29,11 +30,11 @@ function App() {
           <Route
             path="/"
             exact
-            element={user.uid ? <Home /> : <Navigate to="/login" />}
+            element={auth.currentUser ? <Home /> : <Home />}
           />
           <Route
             path="/login"
-            element={!user.uid ? <Login /> : <Navigate to="/" />}
+            element={!auth.currentUser ? <Login /> : <Navigate to="/" />}
           />
           <Route path="/room/:id" element={<Room />} />
           <Route path="/game/:id" element={<Game />} />

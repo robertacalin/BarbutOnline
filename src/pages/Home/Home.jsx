@@ -25,7 +25,6 @@ const Home = () => {
     // Redirect to room
   };
   const handleJoin = () => {
-    console.log("Merge");
     navigate("/room/" + roomId);
     // Redirect to room
   };
@@ -78,7 +77,9 @@ const Home = () => {
               </Box>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleJoin} disabled={!roomId}>Join</Button>
+              <Button onClick={handleJoin} disabled={!roomId}>
+                Join
+              </Button>
               <Button onClick={handleClose}>Close</Button>
             </DialogActions>
           </Dialog>

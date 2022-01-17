@@ -21,7 +21,6 @@ const Login = () => {
 
   const handleGuest = () => {
     signInAnonymously(auth).then(() => {
-      console.log(Boolean(auth.currentUser));
       navigate("/");
     });
   };
@@ -31,7 +30,6 @@ const Login = () => {
       dispatch(
         setUser({ uid: result.user.uid, displayName: result.user.displayName })
       );
-      console.log(auth.currentUser);
     });
   };
 

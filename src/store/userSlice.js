@@ -47,20 +47,18 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const userSlice = createSlice({
-    name: "user",
-    initialState: {uid:null , displayName:null},
-    reducers: {
-      setUser(state, action){
-        state.uid = action.payload.uid ;
-        state.displayName = action.payload.displayName;
-        console.log(action.payload);
-      }
-     
+  name: "user",
+  initialState: { uid: null, displayName: null, logged: false },
+  reducers: {
+    setUser(state, action) {
+      state.uid = action.payload.uid;
+      state.displayName = action.payload.displayName;
+      state.logged = true;
+      console.log(action.payload);
     },
-    extraReducers: {
-     
-    },
-  });
-  
-  export default userSlice.reducer;
-  export const {setUser}=userSlice.actions;
+  },
+  extraReducers: {},
+});
+
+export default userSlice.reducer;
+export const { setUser } = userSlice.actions;

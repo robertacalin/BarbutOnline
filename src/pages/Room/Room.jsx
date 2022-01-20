@@ -14,7 +14,6 @@ import { useSelector } from "react-redux";
 
 const Room = () => {
   const [roomData, setRoomData] = React.useState({});
-  const [startGame, setStartGame] = React.useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
@@ -29,20 +28,17 @@ const Room = () => {
       });
 
       //add current user to room list
-      addUserToList();
+      updateDoc(doc(db, "room", id), {
+        users: arrayUnion({
+          displayName: user.displayName,
+          picture: "",
+          uid: user.uid,
+        }),
+      });
     }
     return () => unsub && unsub();
-  }, [id]);
+  }, [id, user]);
 
-  const addUserToList = async (serverRoomData) => {
-    await updateDoc(doc(db, "room", id), {
-      users: arrayUnion({
-        displayName: user.displayName,
-        picture: "",
-        uid: user.uid,
-      }),
-    });
-  };
 
   const removeUserFromList = async () => {
     const newUserList = roomData.users.filter((u) => u.uid !== user.uid);

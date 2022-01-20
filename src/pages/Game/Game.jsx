@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Game.css";
-import { useParams } from "react-router-dom";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";

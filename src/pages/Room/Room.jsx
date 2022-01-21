@@ -10,6 +10,7 @@ import BigButton from "../../components/BigButton";
 import background from "../../resources/background.jpg";
 import PlayersList from "../../components/PlayersList";
 import { db } from "../../firebase";
+import { addDoc, collection } from "firebase/firestore";
 import { useSelector } from "react-redux";
 
 const Room = () => {
@@ -39,7 +40,6 @@ const Room = () => {
     return () => unsub && unsub();
   }, [id, user]);
 
-
   const removeUserFromList = async () => {
     const newUserList = roomData.users.filter((u) => u.uid !== user.uid);
     await updateDoc(doc(db, "room", roomData.id), {
@@ -53,8 +53,15 @@ const Room = () => {
   };
 
   const handleStartGame = async () => {
+    const docRef = await addDoc(collection(db, "game"), {
+      winner: "",
+      currentRound: 1,
+      scores: roomData.users.map((user) => ({ uid: user.uid, score: 0 })),
+      timer: 0,
+    });
     await updateDoc(doc(db, "room", roomData.id), {
       startGame: true,
+      gameRef: docRef.id,
     });
   };
 

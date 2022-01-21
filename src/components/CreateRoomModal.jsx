@@ -17,7 +17,6 @@ import { db } from "../firebase";
 const CreateRoomModal = ({ open, handleClose }) => {
   const [roomName, setRoomName] = React.useState("");
   const user = useSelector((state) => state.user);
-
   const navigate = useNavigate();
 
   const handleCreate = async () => {
@@ -26,6 +25,7 @@ const CreateRoomModal = ({ open, handleClose }) => {
       owner: user.uid,
       open: true,
       startGame: false,
+      gameRef: '',
       users: [{ displayName: user.displayName, picture: "", uid: user.uid }],
     });
 

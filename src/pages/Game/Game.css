@@ -17,3 +17,13 @@
     padding: 20px;
     border: 7px solid #1A76D2;
 }
+
+.dice {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-80%, -50%);
+    position: absolute;
+    color: rgb(240, 240, 240);
+}

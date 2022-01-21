@@ -1,18 +1,8 @@
-#text_div {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  margin: 10px;
+body {
+  height: 100%;
+  min-height: 100vh;
 }
 
-.center_all {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%);
-  position: absolute;
-  color: rgb(240, 240, 240);
+#root {
+  height: 100vh;
 }

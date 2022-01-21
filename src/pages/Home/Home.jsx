@@ -10,12 +10,15 @@ import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
 import "./Home.css";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "reactfire";
+import { signOut } from "firebase/auth";
 
 const Home = () => {
   const [open, setOpen] = React.useState(false);
   const [openCreate, setOpenCreate] = React.useState(false);
   const [roomId, setRoomId] = React.useState(null);
   const navigate = useNavigate();
+  const auth = useAuth();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -39,6 +42,12 @@ const Home = () => {
     setOpenCreate(false);
   };
 
+  const handleLogOut = () => {
+    signOut(auth).then(() => {
+      navigate("/login");
+    });
+  };
+
   return (
     <div>
       <div id="text_div center_all">
@@ -49,6 +58,9 @@ const Home = () => {
             </button>
             <button className="homeButton" onClick={handleClickOpen}>
               <b>Join room</b>
+            </button>
+            <button className="homeButton" onClick={handleLogOut}>
+              <b>Log Out</b>
             </button>
           </div>
           <Dialog maxWidth="md" open={open} onClose={handleClose}>

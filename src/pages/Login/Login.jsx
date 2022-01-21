@@ -17,8 +17,13 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleGuest = () => {
-    signInAnonymously(auth).then(() => {
-      navigate("/");
+    signInAnonymously(auth).then((result) => {
+      dispatch(
+        setUser({
+          uid: result.user.uid,
+          displayName: `guest${Math.floor(Math.random() * 100)}`,
+        })
+      );
     });
   };
 

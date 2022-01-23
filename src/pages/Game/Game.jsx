@@ -6,14 +6,14 @@ import { doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useSelector } from "react-redux";
 import CountDown from "../../components/CountDown";
+import { Box } from "@mui/system";
 
 const Game = ({ roomData }) => {
   const users = roomData.users;
   const [gameData, setGameData] = React.useState({});
   const [diceValue1, setDiceValue1] = React.useState(0);
   const [diceValue2, setDiceValue2] = React.useState(0);
-  const [disableDice1, setDisableDice1] = React.useState(false);
-  const [disableDice2, setDisableDice2] = React.useState(false);
+  const [rolls, setRolls] = React.useState(0);
   const user = useSelector((state) => state.user);
 
   React.useEffect(() => {
@@ -30,20 +30,21 @@ const Game = ({ roomData }) => {
       });
     }
     return () => unsub && unsub();
-  }, []);
+  }, [roomData, user]);
 
   React.useEffect(() => {
-    setDisableDice1(false);
-    setDisableDice2(false);
+    setRolls(0);
+    setDiceValue1(0);
+    setDiceValue2(0);
   }, [gameData.currentRound]);
 
-  console.log("scores", gameData.scores);
   const updateScore = () => {
-    if (diceValue1 + diceValue2) {
+    if (gameData.scores) {
       const newScoreArr = gameData.scores.map((obj) => {
         if (obj.uid === user.uid) {
           obj.score += diceValue1 + diceValue2;
         }
+        return obj;
       });
       updateDoc(doc(db, "game", roomData.gameRef), {
         scores: newScoreArr,
@@ -51,57 +52,69 @@ const Game = ({ roomData }) => {
     }
   };
 
-  const handeRoundStart = () => {
-    setDisableDice1(false);
-    setDisableDice2(false);
-  };
-
   return (
-    <div>
-      <h1 class="round-game">ROUND {gameData.currentRound}</h1>
-      <div>
-        <h1>
-          <CountDown
-            finalValue={gameData.timer}
-            gameData={gameData}
-            roomData={roomData}
-            updateScore={updateScore}
-          />
-        </h1>
-        <br></br>
-        <br></br>
-        <div className="d-flex flex-row justify-content-center gap-5">
+    <Box display="flex" minWidth="300px" gap="3rem">
+      <div className="players-list">
+        <h2 style={{ marginBottom: "40px" }}>ROOM {roomData.name}</h2>
+        <PlayersList
+          users={users}
+          ownerId={roomData.owner}
+          scores={gameData.scores}
+          withScore
+        />
+      </div>
+      <Box
+        width="100%"
+        minHeight="100vh"
+        padding="0 2rem"
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-between"
+      >
+        <Box>
+          <h1 className="round-game">ROUND {gameData.currentRound}</h1>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            gap="20px"
+          >
+            <h3 style={{ width: 150 }}>
+              Time:
+              <CountDown
+                finalValue={gameData.timer}
+                gameData={gameData}
+                roomData={roomData}
+                updateScore={updateScore}
+              />
+            </h3>
+            <h3>Rolls: {rolls}/2</h3>
+          </Box>
+          <h6 style={{ textAlign: "center" }}>*Press Enter to roll dice</h6>
+        </Box>
+        <Box display="flex" justifyContent="center" gap="4rem" padding="20px">
           <Dice
             onRoll={(value) => {
               setDiceValue1(value);
-              setDisableDice1(true);
+              setRolls((rolls) => rolls + 1);
             }}
-            triggers={disableDice1 ? [] : ["Enter"]}
+            triggers={rolls === 2 ? [] : ["Enter", "Spacebar"]}
+            sound="http://cd.textfiles.com/itcontinues/WIN/YTB22/MANYDICE.WAV"
+            size={150}
+            rollingTime={700}
           />
-          &nbsp;
           <Dice
             onRoll={(value) => {
               setDiceValue2(value);
-              setDisableDice2(true);
             }}
-            triggers={disableDice2 ? [] : ["Enter"]}
+            triggers={rolls === 2 ? [] : ["Enter", "Spacebar"]}
+            size={150}
+            rollingTime={700}
           />
-        </div>
-        <br></br>
-        <br></br>
+        </Box>
         <h1>Score: {diceValue1 + diceValue2}</h1>
-      </div>
-      <div class="participants-list">
-        <h2>ROOM {roomData.name}</h2>
-        <br></br>
-        <PlayersList users={users} ownerId={roomData.owner} />
-        <div className="center_all">
-          <button className="sign center-all" onClick={handeRoundStart}>
-            <b>Start Round!</b>
-          </button>
-        </div>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 export default Game;

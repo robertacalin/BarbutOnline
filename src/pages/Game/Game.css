@@ -1,29 +1,23 @@
-.participants-list{
-    width: 350px;
-    height: 100%;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    right: 0;
-    overflow-x: hidden;
-    padding-top: 20px;
-    padding-left: 30px;
-    background-color: #1A76D2;
-    color: #FFFFFF;
-    border: 2px solid #1A76D2;
+.players-list {
+  min-width: 300px;
+  padding: 20px 10px;
+  background-color: #1a76d2;
+  color: #ffffff;
+  border: 2px solid #1a76d2;
 }
-.round-game{
-    color: #1A76D2;
-    padding: 20px;
-    border: 7px solid #1A76D2;
+.round-game {
+  color: #1a76d2;
+  padding: 20px;
+  border: 7px solid #1a76d2;
+  border-radius: 25px;
 }
 
 .dice {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-right: -50%;
-    transform: translate(-80%, -50%);
-    position: absolute;
-    color: rgb(240, 240, 240);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-80%, -50%);
+  position: absolute;
+  color: rgb(240, 240, 240);
 }

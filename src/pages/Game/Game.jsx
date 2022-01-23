@@ -5,6 +5,7 @@ import PlayersList from "../../components/PlayersList";
 import { doc, onSnapshot, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useSelector } from "react-redux";
+import CountDown from "../../components/CountDown";
 
 const Game = ({ roomData }) => {
   const users = roomData.users;
@@ -23,23 +24,49 @@ const Game = ({ roomData }) => {
         setGameData(data);
       });
     }
-    if (user.uid === roomData.owner && gameData.timer && gameData !== 0) {
+    if (user.uid === roomData.owner) {
       updateDoc(doc(db, "game", roomData.gameRef), {
-        timer: new Date().getTime() / 1000 + 20,
+        timer: new Date().getTime() / 1000 + 10,
       });
     }
     return () => unsub && unsub();
   }, []);
 
-  const handeRoundStart = () => {};
+  React.useEffect(() => {
+    setDisableDice1(false);
+    setDisableDice2(false);
+  }, [gameData.currentRound]);
+
+  console.log("scores", gameData.scores);
+  const updateScore = () => {
+    if (diceValue1 + diceValue2) {
+      const newScoreArr = gameData.scores.map((obj) => {
+        if (obj.uid === user.uid) {
+          obj.score += diceValue1 + diceValue2;
+        }
+      });
+      updateDoc(doc(db, "game", roomData.gameRef), {
+        scores: newScoreArr,
+      });
+    }
+  };
+
+  const handeRoundStart = () => {
+    setDisableDice1(false);
+    setDisableDice2(false);
+  };
 
   return (
     <div>
-      <h1 class="round-game">ROUND 1</h1>
+      <h1 class="round-game">ROUND {gameData.currentRound}</h1>
       <div>
         <h1>
-          {gameData?.timer !== 0 &&
-            gameData.timer - new Date().getTime() / 1000}
+          <CountDown
+            finalValue={gameData.timer}
+            gameData={gameData}
+            roomData={roomData}
+            updateScore={updateScore}
+          />
         </h1>
         <br></br>
         <br></br>
@@ -49,16 +76,15 @@ const Game = ({ roomData }) => {
               setDiceValue1(value);
               setDisableDice1(true);
             }}
-            triggers={["Enter"]}
-            disabled={disableDice1}
+            triggers={disableDice1 ? [] : ["Enter"]}
           />
+          &nbsp;
           <Dice
             onRoll={(value) => {
               setDiceValue2(value);
               setDisableDice2(true);
             }}
-            triggers={["Enter"]}
-            disabled={disableDice2}
+            triggers={disableDice2 ? [] : ["Enter"]}
           />
         </div>
         <br></br>

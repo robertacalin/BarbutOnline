@@ -33,7 +33,7 @@ const Game = ({ roomData }) => {
     }
     if (user.uid === roomData.owner) {
       updateDoc(doc(db, "game", roomData.gameRef), {
-        timer: new Date().getTime() / 1000 + 10,
+        timer: new Date().getTime() / 1000 + 15,
       });
     }
     return () => unsub && unsub();

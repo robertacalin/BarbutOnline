@@ -16,9 +16,9 @@ import { useNavigate } from "react-router";
 
 const renderScore = (user, scores) => {
   if (user && scores) {
-    const allUserScores = scores.filter((obj) => {
-      if (obj.uid === user.uid) return obj;
-    });
+    const allUserScores = scores.filter((obj) => 
+      obj.uid === user.uid 
+    );
 
     const mostRecentScore = Math.max.apply(
       Math,

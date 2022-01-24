@@ -33,7 +33,7 @@ const WinnerScreen = ({ winnerName }) => {
     return () => clearInterval(intv);
   }, [rewardRef]);
   return (
-    <div style={{ marginLeft: "50%" }}>
+    <div style={{ left: "50%" , position: "absolute" }}>
       <Reward
         ref={rewardRef}
         type="emoji"

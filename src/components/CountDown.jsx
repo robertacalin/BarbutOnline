@@ -58,8 +58,9 @@ const CountDown = ({ finalValue, gameData, roomData, updateScore }) => {
       updateScore();
       intv && clearInterval(intv);
     }
-    if (gameData.currentRound === 3 && localTime === 0 && calcTime < 1) {
+    if (gameData.currentRound === 3 && localTime === 0 && calcTime < 1 && user.uid === roomData.owner) {
       setWinner(gameData, roomData);
+      
     }
     return () => intv && clearInterval(intv);
   }, [finalValue, localTime]);

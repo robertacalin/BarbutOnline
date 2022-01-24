@@ -47,9 +47,9 @@ const Game = ({ roomData }) => {
 
   const updateScore = async () => {
     if (gameData.scores) {
-      const allUserScores = gameData.scores.filter((obj) => {
-        if (obj.uid === user.uid) return obj;
-      });
+      const allUserScores = gameData.scores.filter(
+        (obj) => obj.uid === user.uid
+      );
 
       const mostRecentScore = Math.max.apply(
         Math,
@@ -70,11 +70,14 @@ const Game = ({ roomData }) => {
       });
     }
   };
-  if (gameData && gameData.winner && gameData.winner.length > 0) {
+  /*   if (gameData && gameData.winner && gameData.winner.length > 0) {
     return <WinnerScreen winnerName={gameData.winner} />;
-  }
+  } */
   return (
     <Box display="flex" minWidth="300px" gap="3rem">
+      {gameData && gameData.winner && gameData.winner.length > 0 && (
+        <WinnerScreen winnerName={gameData.winner} />
+      )}
       <div className="players-list">
         <h2 style={{ marginBottom: "40px" }}>ROOM {roomData.name}</h2>
         <PlayersList

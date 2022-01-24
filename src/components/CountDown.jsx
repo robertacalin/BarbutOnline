@@ -25,14 +25,13 @@ const setWinner = (gameData, roomData) => {
 };
 
 const updateGameStatus = (gameData, roomData) => {
-  setTimeout(
-    () =>
+  
+    
       updateDoc(doc(db, "game", roomData.gameRef), {
         timer: new Date().getTime() / 1000 + 15,
         currentRound: gameData.currentRound + 1,
-      }),
-    1000
-  );
+      })
+  
 };
 
 const CountDown = ({ finalValue, gameData, roomData, updateScore }) => {
@@ -51,14 +50,14 @@ const CountDown = ({ finalValue, gameData, roomData, updateScore }) => {
         calcTime >= 0 && setLocalTime(calcTime);
       }, 1000);
     }
-    if (localTime <= 1 && calcTime < 1) {
+    if (localTime <= 1 && calcTime <= 1) {
       if (gameData.currentRound < 3 && user.uid === roomData.owner) {
         updateGameStatus(gameData, roomData);
       }
       updateScore();
       intv && clearInterval(intv);
     }
-    if (gameData.currentRound === 3 && localTime === 0 && calcTime < 1 && user.uid === roomData.owner) {
+    if (gameData.currentRound === 3 && localTime <= 1 && calcTime <= 1 && user.uid === roomData.owner) {
       setWinner(gameData, roomData);
       
     }

@@ -7,6 +7,8 @@ import Login from "./pages/Login/Login";
 import Room from "./pages/Room/Room";
 import { useSelector } from "react-redux";
 import AuthGuard from "./components/AuthGuard";
+import WinnerScreen from "./components/WinnerScreen";
+
 
 const routes = [
   { path: "/", component: <Home /> },
@@ -28,6 +30,10 @@ function App() {
       <Route
         path="/login"
         element={!user.logged ? <Login /> : <Navigate to="/" />}
+      />
+      <Route
+        path="/win"
+        element={<WinnerScreen/>}
       />
     </Routes>
   );

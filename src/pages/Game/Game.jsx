@@ -13,6 +13,7 @@ import { db } from "../../firebase";
 import { useSelector } from "react-redux";
 import CountDown from "../../components/CountDown";
 import { Box } from "@mui/system";
+import WinnerScreen from "../../components/WinnerScreen";
 
 const Game = ({ roomData }) => {
   const users = roomData.users;
@@ -69,7 +70,9 @@ const Game = ({ roomData }) => {
       });
     }
   };
-
+  if (gameData && gameData.winner && gameData.winner.length > 0) {
+    return <WinnerScreen winnerName={gameData.winner} />;
+  }
   return (
     <Box display="flex" minWidth="300px" gap="3rem">
       <div className="players-list">

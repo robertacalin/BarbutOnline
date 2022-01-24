@@ -3,6 +3,27 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { db } from "../firebase";
 
+const setWinner = (gameData, roomData) => {
+  if (gameData.scores) {
+    const highestScore = Math.max.apply(
+      Math,
+      gameData.scores.map((obj) => {
+        return obj.score;
+      })
+    );
+
+    const userScore = gameData.scores.find((obj) => obj.score === highestScore);
+    const winnerName = roomData.users.find(
+      (u) => u.uid === userScore.uid
+    ).displayName;
+    console.log(winnerName);
+
+     updateDoc(doc(db, "game", roomData.gameRef), {
+      winner: winnerName
+    });
+  }
+};
+
 const updateGameStatus = (gameData, roomData) => {
   setTimeout(
     () =>
@@ -37,8 +58,11 @@ const CountDown = ({ finalValue, gameData, roomData, updateScore }) => {
       updateScore();
       intv && clearInterval(intv);
     }
+    if (gameData.currentRound === 3 && localTime === 0 && calcTime < 1) {
+      setWinner(gameData, roomData);
+    }
     return () => intv && clearInterval(intv);
-  }, [finalValue, localTime,]);
+  }, [finalValue, localTime]);
 
   return localTime === undefined || localTime === null
     ? " -"

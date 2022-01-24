@@ -22,6 +22,7 @@ const Login = () => {
         setUser({
           uid: result.user.uid,
           displayName: `guest${Math.floor(Math.random() * 100)}`,
+          photoURL: ''
         })
       );
     });
@@ -30,7 +31,11 @@ const Login = () => {
   const handleLoginWithGoogle = async () => {
     await signInWithPopup(auth, provider).then((result) => {
       dispatch(
-        setUser({ uid: result.user.uid, displayName: result.user.displayName })
+        setUser({
+          uid: result.user.uid,
+          displayName: result.user.displayName,
+          photoURL: result.user.photoURL,
+        })
       );
     });
   };

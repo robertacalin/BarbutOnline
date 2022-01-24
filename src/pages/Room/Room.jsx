@@ -32,7 +32,7 @@ const Room = () => {
       updateDoc(doc(db, "room", id), {
         users: arrayUnion({
           displayName: user.displayName,
-          picture: "",
+          picture: user.photoURL,
           uid: user.uid,
         }),
       });

@@ -2,7 +2,13 @@ import React from "react";
 import "./Game.css";
 import Dice from "react-dice-roll";
 import PlayersList from "../../components/PlayersList";
-import { doc, onSnapshot, updateDoc } from "firebase/firestore";
+import {
+  doc,
+  onSnapshot,
+  updateDoc,
+  arrayRemove,
+  arrayUnion,
+} from "firebase/firestore";
 import { db } from "../../firebase";
 import { useSelector } from "react-redux";
 import CountDown from "../../components/CountDown";
@@ -38,16 +44,28 @@ const Game = ({ roomData }) => {
     setDiceValue2(0);
   }, [gameData.currentRound]);
 
-  const updateScore = () => {
+  const updateScore = async () => {
     if (gameData.scores) {
-      const newScoreArr = gameData.scores.map((obj) => {
-        if (obj.uid === user.uid) {
-          obj.score += diceValue1 + diceValue2;
-        }
-        return obj;
+      const allUserScores = gameData.scores.filter((obj) => {
+        if (obj.uid === user.uid) return obj;
       });
-      updateDoc(doc(db, "game", roomData.gameRef), {
-        scores: newScoreArr,
+
+      const mostRecentScore = Math.max.apply(
+        Math,
+        allUserScores.map((obj) => {
+          return obj.score;
+        })
+      );
+
+      const userScore = allUserScores.find(
+        (obj) => obj.score === mostRecentScore
+      );
+
+      await updateDoc(doc(db, "game", roomData.gameRef), {
+        scores: arrayUnion({
+          uid: user.uid,
+          score: userScore.score + diceValue1 + diceValue2,
+        }),
       });
     }
   };
@@ -98,7 +116,7 @@ const Game = ({ roomData }) => {
               setDiceValue1(value);
               setRolls((rolls) => rolls + 1);
             }}
-            triggers={rolls === 2 ? [] : ["Enter", "Spacebar"]}
+            triggers={rolls === 2 ? [] : ["Enter"]}
             sound="http://cd.textfiles.com/itcontinues/WIN/YTB22/MANYDICE.WAV"
             size={150}
             rollingTime={700}
@@ -107,7 +125,7 @@ const Game = ({ roomData }) => {
             onRoll={(value) => {
               setDiceValue2(value);
             }}
-            triggers={rolls === 2 ? [] : ["Enter", "Spacebar"]}
+            triggers={rolls === 2 ? [] : ["Enter"]}
             size={150}
             rollingTime={700}
           />

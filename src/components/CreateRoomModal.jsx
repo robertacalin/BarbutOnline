@@ -26,7 +26,7 @@ const CreateRoomModal = ({ open, handleClose }) => {
       open: true,
       startGame: false,
       gameRef: '',
-      users: [{ displayName: user.displayName, picture: "", uid: user.uid }],
+      users: [{ displayName: user.displayName, picture: user.photoURL, uid: user.uid }],
     });
 
     navigate(`/room/${docRef.id}`);

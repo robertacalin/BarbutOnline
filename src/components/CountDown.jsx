@@ -3,7 +3,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { db } from "../firebase";
 
-const setWinner = (gameData, roomData) => {
+const calcWinner = (gameData, roomData) => {
   if (gameData.scores) {
     const highestScore = Math.max.apply(
       Math,
@@ -18,10 +18,9 @@ const setWinner = (gameData, roomData) => {
     ).displayName;
     console.log(winnerName);
 
-     updateDoc(doc(db, "game", roomData.gameRef), {
-      winner: winnerName
-    });
+    return winnerName;
   }
+  return "";
 };
 
 const updateGameStatus = (gameData, roomData) => {
@@ -35,9 +34,26 @@ const updateGameStatus = (gameData, roomData) => {
   );
 };
 
-const CountDown = ({ finalValue, gameData, roomData, updateScore }) => {
+const CountDown = ({
+  finalValue,
+  gameData,
+  roomData,
+  updateScore,
+  setWinner,
+}) => {
   const [localTime, setLocalTime] = React.useState(null);
+  const [currentRound, setCurrentRound] = React.useState(null);
+  const [winnerTimeout, setWinnerTimeout] = React.useState(null);
   const user = useSelector((state) => state.user);
+
+  React.useEffect(() => {
+    if (gameData.currentRound && gameData.currentRound !== currentRound) {
+      setCurrentRound(gameData.currentRound);
+      if (gameData.currentRound > 1) {
+        updateScore();
+      }
+    }
+  }, [gameData.currentRound]);
 
   React.useEffect(() => {
     let intv;
@@ -55,12 +71,19 @@ const CountDown = ({ finalValue, gameData, roomData, updateScore }) => {
       if (gameData.currentRound < 3 && user.uid === roomData.owner) {
         updateGameStatus(gameData, roomData);
       }
-      updateScore();
+
       intv && clearInterval(intv);
     }
-    if (gameData.currentRound === 3 && localTime === 0 && calcTime < 1 && user.uid === roomData.owner) {
-      setWinner(gameData, roomData);
-      
+    if (gameData.currentRound === 3 && localTime === 1 ) {
+      updateScore();
+    }
+    if (gameData.currentRound === 3 && localTime <= 1 && calcTime <= 1) {
+      if (winnerTimeout) clearTimeout(winnerTimeout);
+      const timeout = setTimeout(
+        () => setWinner(calcWinner(gameData, roomData)),
+        3000
+      );
+      setWinnerTimeout(timeout);
     }
     return () => intv && clearInterval(intv);
   }, [finalValue, localTime]);

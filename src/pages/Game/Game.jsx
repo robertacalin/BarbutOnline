@@ -21,6 +21,7 @@ const Game = ({ roomData }) => {
   const [diceValue1, setDiceValue1] = React.useState(0);
   const [diceValue2, setDiceValue2] = React.useState(0);
   const [rolls, setRolls] = React.useState(0);
+  const [winner, setWinner] = React.useState('');
   const user = useSelector((state) => state.user);
 
   React.useEffect(() => {
@@ -75,8 +76,8 @@ const Game = ({ roomData }) => {
   } */
   return (
     <Box display="flex" minWidth="300px" gap="3rem">
-      {gameData && gameData.winner && gameData.winner.length > 0 && (
-        <WinnerScreen winnerName={gameData.winner} />
+      {winner && winner.length > 0 && (
+        <WinnerScreen winnerName={winner} />
       )}
       <div className="players-list">
         <h2 style={{ marginBottom: "40px" }}>ROOM {roomData.name}</h2>
@@ -110,6 +111,7 @@ const Game = ({ roomData }) => {
                 gameData={gameData}
                 roomData={roomData}
                 updateScore={updateScore}
+                setWinner={setWinner}
               />
             </h3>
             <h3>Rolls: {rolls}/2</h3>

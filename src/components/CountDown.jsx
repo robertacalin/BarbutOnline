@@ -74,7 +74,7 @@ const CountDown = ({
 
       intv && clearInterval(intv);
     }
-    if (gameData.currentRound === 3 && localTime === 1 ) {
+    if (gameData.currentRound === 3 && localTime === 1) {
       updateScore();
     }
     if (gameData.currentRound === 3 && localTime <= 1 && calcTime <= 1) {
